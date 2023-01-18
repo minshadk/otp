@@ -9,6 +9,7 @@ import {
   Text,
   Button,
   TextInput,
+  Pressable,
 } from "react-native";
 
 // const { selected, options, placeholder, error, setSelected, inputProps } =
@@ -16,13 +17,27 @@ import {
 
 const OtpInput = (props) => {
   const { otp, setOtp, isOtpReady, setIsOtpReady } = props;
+  const boxArray = new Array(4).fill(0);
   const inputRef = useRef();
+
+  const boxDigit = (_, index) => {
+    const emptyInput = "";
+    const digit = otp[index] || emptyInput;
+    return (
+      <View key={index} style={styles.splitBoxes}>
+        <Text style={styles.splitBoxText}>{digit}</Text>
+      </View>
+    );
+  };
 
   const handleOnBlur = () => {};
 
   return (
     <View style={styles.container}>
       {/* <TextInput style={styles.container} /> */}
+      <Pressable style={styles.splitOtpBoxesContainer}>
+        {boxArray.map(boxDigit)}
+      </Pressable>
       <TextInput
         placeholder="useless placeholder"
         style={styles.input}
@@ -33,9 +48,6 @@ const OtpInput = (props) => {
         onBlur={handleOnBlur}
       />
     </View>
-    // <View>
-    //   <Text>test</Text>
-    // </View>
   );
 };
 
@@ -53,6 +65,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     padding: 15,
+  },
+  splitOtpBoxesContainer: {
+    width: "80%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  splitBoxes: {
+    borderColor: "e5e5e5",
+    borderWidth: 2,
+    borderRadius: 5,
+    padding: 12,
+    minWidth: 50,
+  },
+  splitBoxText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#e5e5e5",
   },
 });
 
