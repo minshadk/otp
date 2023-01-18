@@ -8,13 +8,20 @@ import {
   Text,
   Button,
 } from "react-native";
+import OtpInput from "../components/OtpInput";
 
 const VerifyOtp = ({ navigation, route }) => {
+  const [otp, setOtp] = useState("");
+  const [isOtpReady, setIsOtpReady] = useState(false);
   const { phoneNumber } = route.params;
   return (
     <View style={styles.container}>
-      <Text>yout number is {phoneNumber}</Text>
-      <Text>Verify your otp </Text>
+      <OtpInput
+        otp={otp}
+        isOtpReady={isOtpReady}
+        setOtp={setOtp}
+        setIsOtpReady={setIsOtpReady}
+      />
     </View>
   );
 };
