@@ -1,5 +1,5 @@
 // import React from "react";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,25 +12,51 @@ import {
   Pressable,
 } from "react-native";
 
-// const { selected, options, placeholder, error, setSelected, inputProps } =
-// props;
-
 const OtpInput = (props) => {
-  const { otp, setOtp, isOtpReady, setIsOtpReady } = props;
+  const { otp, setOtp, isOtpReady, setIsOtpReady, maximumLength } = props;
+  const [isInputBoxFocused, setIsInputBoxFocused] = useState(false);
   const boxArray = new Array(4).fill(0);
   const inputRef = useRef();
 
   const boxDigit = (_, index) => {
     const emptyInput = "";
     const digit = otp[index] || emptyInput;
+
+    const isCurrentValue = index === otp.length;
+    const isLastValue = index === maximumLength - 1;
+    const isCodeComplete = otp.length === maximumLength;
+
+    const isValueFocused = isCurrentValue || (isLastValue && isCodeComplete);
+
+    useEffect(() => {
+      setIsOtpReady(otp.length === maximumLength);
+      return () => {
+        setIsOtpReady(false);
+      };
+    }, [otp]);
+
     return (
-      <View key={index} style={styles.splitBoxes}>
+      // <View key={index} style={[styles.splitBoxes, styles.splitBoxesFocused]}>
+      <View
+        key={index}
+        style={[
+          styles.splitBoxes,
+          isInputBoxFocused && isValueFocused ? styles.splitBoxesFocused : null,
+        ]}
+      >
         <Text style={styles.splitBoxText}>{digit}</Text>
       </View>
     );
   };
 
-  const handleOnBlur = () => {};
+  const handleOnPress = () => {
+    setIsInputBoxFocused(true);
+    inputRef.current.focus();
+  };
+
+  const handleOnBlur = () => {
+    setIsInputBoxFocused(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -65,6 +91,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     padding: 15,
+    // position: " absolute",
+    // opacity: 0,
   },
   splitOtpBoxesContainer: {
     width: "80%",
@@ -82,6 +110,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     color: "#e5e5e5",
+  },
+  splitBoxesFocused: {
+    borderColor: "#ecdbba",
+    backgroundColor: "grey",
   },
 });
 
