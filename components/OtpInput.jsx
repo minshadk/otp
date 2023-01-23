@@ -61,7 +61,11 @@ const OtpInput = (props) => {
   return (
     <View style={styles.container}>
       {/* <TextInput style={styles.container} /> */}
-      <Pressable style={styles.splitOtpBoxesContainer}>
+      <Pressable
+        style={styles.splitOtpBoxesContainer}
+        onPress={handleOnPress}
+        onBlur={handleOnBlur}
+      >
         {boxArray.map(boxDigit)}
       </Pressable>
       <TextInput
@@ -72,6 +76,7 @@ const OtpInput = (props) => {
         maxLength={4}
         ref={inputRef}
         onBlur={handleOnBlur}
+        keyboardType={"number-pad"}
       />
     </View>
   );
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 15,
     // position: " absolute",
-    // opacity: 0,
+    opacity: 0,
   },
   splitOtpBoxesContainer: {
     width: "80%",
