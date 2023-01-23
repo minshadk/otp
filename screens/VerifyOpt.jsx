@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Text,
   Button,
+  Pressable,
+  Keyboard,
 } from "react-native";
 import OtpInput from "../components/OtpInput";
 
@@ -14,15 +16,28 @@ const VerifyOtp = ({ navigation, route }) => {
   const [otp, setOtp] = useState("");
   const [isOtpReady, setIsOtpReady] = useState(false);
   const { phoneNumber } = route.params;
+
+  const handleSubmit = () => {
+    console.log("handle press clicked");
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={Keyboard.dismiss}>
       <OtpInput
         otp={otp}
         isOtpReady={isOtpReady}
+        maximumLength={4}
         setOtp={setOtp}
         setIsOtpReady={setIsOtpReady}
       />
-    </View>
+      <TouchableOpacity
+        style={styles.button}
+        disabled={!isOtpReady}
+        onPress={handleSubmit}
+      >
+        <Text style={styles.buttonText}> Submit</Text>
+      </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -57,6 +72,20 @@ const styles = StyleSheet.create({
 
   errorText: {
     color: "red",
+  },
+
+  buttonContainer: {
+    backgroundColor: "#d8e9a8",
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 200,
+    marginTop: 30,
+  },
+
+  buttonText: {
+    color: "#333",
+    fontSize: 20,
   },
 });
 
